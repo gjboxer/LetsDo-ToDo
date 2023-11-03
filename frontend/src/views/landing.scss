@@ -1,0 +1,65 @@
+.entry {
+    text-align: left;
+    padding: 14vh 6vw;
+}
+
+.entry h1 {
+    margin: 3vh 0;
+    color: #0a183d;
+}
+
+.entry h1 span {
+    color: #b71540;
+}
+
+.entry h4 {
+    color: #0a183d;
+    margin: 4vh 0;
+}
+
+.entry h4 span {
+    color: #b71540;
+}
+
+.entry p {
+    margin: 5vh 0;
+}
+
+.entryImg {
+    padding-top: 10vh;
+    padding-left: 10vw;
+    -webkit-animation: anime_hero 10s linear infinite alternate;
+    animation: anime_hero 10s linear infinite alternate;
+}
+
+@keyframes anime_hero {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0.8);
+    }
+}
+#robot {
+    filter: drop-shadow(0 -6mm 4mm rgba(8, 1, 10, 0.51));
+}
+.stylebutton{
+  padding:45px 32px;
+  background: #b71540;
+  line-height: 25px;
+  font-size: 25px;
+  font-weight: lighter;
+  text-transform: capitalize;
+  color: #fff;
+  border: none;
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  border-radius: 35px;
+  outline: none;
+}
+.stylebutton:hover{
+  box-shadow: 2px 2px 10px 5px black;
+  background: #b71540;
+  color: #fff;
+  font-weight: bolder;
+}
