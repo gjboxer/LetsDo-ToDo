@@ -8,9 +8,6 @@ class Dashboard extends React.Component {
     if (localStorage.getItem("authTokens")) {
       const decode = jwtDecode(localStorage.getItem("authTokens"));
       user_id = decode.user_id;
-      var username = decode.username;
-      var full_name = decode.full_name;
-      var image = decode.image;
     }
 
     super(props);
@@ -27,6 +24,7 @@ class Dashboard extends React.Component {
       sortCriteria: "due_date",
       sortOrder: "asc",
       editing: false,
+      currentTab: "All",
     };
     this.fetchTasks = this.fetchTasks.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -59,8 +57,13 @@ class Dashboard extends React.Component {
 
   fetchTasks() {
     console.log("Fetching...");
+    var user_id = 0;
+    if (localStorage.getItem("authTokens")) {
+      const decode = jwtDecode(localStorage.getItem("authTokens"));
+      user_id = decode.username;
+    }
 
-    fetch("http://127.0.0.1:8000/api/task-list/")
+    fetch(`http://127.0.0.1:8000/api/task-list/?user=${user_id}`)
       .then((response) => response.json())
       .then((data) =>
         this.setState({
@@ -68,6 +71,10 @@ class Dashboard extends React.Component {
         })
       );
   }
+
+  switchTab = (tab) => {
+    this.setState({ currentTab: tab });
+  };
 
   handleChange(e) {
     var name = e.target.name;
@@ -117,7 +124,7 @@ class Dashboard extends React.Component {
         editing: false,
       });
     }
-    console.log("__2", this.state.activeItem)
+    console.log("__2", this.state.activeItem);
 
     fetch(url, {
       method: "POST",
@@ -132,9 +139,6 @@ class Dashboard extends React.Component {
         if (localStorage.getItem("authTokens")) {
           const decode = jwtDecode(localStorage.getItem("authTokens"));
           user_id = decode.user_id;
-          var username = decode.username;
-          var full_name = decode.full_name;
-          var image = decode.image;
         }
         this.fetchTasks();
         this.setState({
@@ -209,39 +213,49 @@ class Dashboard extends React.Component {
 
   sortTasks() {
     const { todoList, sortCriteria, sortOrder } = this.state;
-  
+
     const priorityOrder = ["high", "medium", "low"];
-  
+
     const sortedTasks = [...todoList].sort((a, b) => {
-      const orderMultiplier = sortOrder === 'asc' ? 1 : -1;
-  
-      if (sortCriteria === 'due_date') {
+      const orderMultiplier = sortOrder === "asc" ? 1 : -1;
+
+      if (sortCriteria === "due_date") {
         return orderMultiplier * (a.due_date > b.due_date ? 1 : -1);
-      } else if (sortCriteria === 'priority') {
+      } else if (sortCriteria === "priority") {
         const priorityA = priorityOrder.indexOf(a.priority);
         const priorityB = priorityOrder.indexOf(b.priority);
-  
-        return orderMultiplier * (priorityA - priorityB); 
+
+        return orderMultiplier * (priorityA - priorityB);
       } else {
         return 0;
       }
     });
-  
+
     return sortedTasks;
   }
 
   render() {
+    const { currentTab } = this.state;
     var tasks = this.sortTasks();
     console.log("__1", tasks);
     var self = this;
 
     if (localStorage.getItem("authTokens")) {
       const decode = jwtDecode(localStorage.getItem("authTokens"));
-      var user_id = decode.user_id;
       var username = decode.username;
-      var full_name = decode.full_name;
-      var image = decode.image;
     }
+
+    const filteredTasks = tasks.filter((task) => {
+      if (currentTab === "All") {
+        return true;
+      } else if (currentTab === "Completed") {
+        return task.completed;
+      } else if (currentTab === "Active") {
+        return !task.completed;
+      }
+      return false;
+    });
+
     return (
       <div className="container">
         <center style={{ marginTop: 10, fontSize: 25, fontWeight: "bold" }}>
@@ -249,7 +263,12 @@ class Dashboard extends React.Component {
         </center>
         <div id="task-container">
           <div
-            style={{padding: 10, margin: 0, display: "flex", alignItems: "center" }}
+            style={{
+              padding: 10,
+              margin: 0,
+              display: "flex",
+              alignItems: "center",
+            }}
           >
             <label htmlFor="sortCriteria" style={{ marginRight: "10px" }}>
               Sort by:
@@ -260,8 +279,8 @@ class Dashboard extends React.Component {
               onChange={this.handleSortCriteriaChange}
               style={{ marginRight: "20px", padding: "10px", width: 400 }}
             >
-              <option value="due_date" >Due Date</option>
-              <option value="priority" >Priority</option>
+              <option value="due_date">Due Date</option>
+              <option value="priority">Priority</option>
             </select>
 
             <label htmlFor="sortOrder" style={{ marginRight: "10px" }}>
@@ -276,6 +295,31 @@ class Dashboard extends React.Component {
               <option value="asc">Ascending</option>
               <option value="desc">Descending</option>
             </select>
+          </div>
+
+          <div style={{marginLeft: '30%'}}>
+            <button
+              className={`tab-button ${currentTab === "All" ? "active" : ""}`}
+              onClick={() => this.switchTab("All")}
+            >
+              All
+            </button>
+            <button
+              className={`tab-button ${
+                currentTab === "Completed" ? "active" : ""
+              }`}
+              onClick={() => this.switchTab("Completed")}
+            >
+              Completed
+            </button>
+            <button
+              className={`tab-button ${
+                currentTab === "Active" ? "active" : ""
+              }`}
+              onClick={() => this.switchTab("Active")}
+            >
+              Active
+            </button>
           </div>
 
           <div id="form-wrapper">
@@ -330,7 +374,7 @@ class Dashboard extends React.Component {
           </div>
 
           <div id="list-wrapper">
-            {tasks.map(function (task, index) {
+            {filteredTasks.map(function (task, index) {
               console.log("__3", task.completed);
               return (
                 <div key={index} className="task-wrapper flex-wrapper">
