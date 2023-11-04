@@ -2,6 +2,9 @@
 
 This is a simple TodoList app built using React and Django, designed to help you manage your tasks efficiently. You can add, edit, and delete tasks, sort them by due date or priority, and filter them by their completion status. The app also uses JWT (JSON Web Tokens) for user authentication.
 
+## Demo
+https://github.com/gjboxer/LetsDo-ToDo/assets/64975110/bd61d418-164e-4f0e-a9b9-945799a686be
+
 ## Features
 
 - **User authentication:** Users can log in to their accounts, and their tasks will be associated with their user ID.
