@@ -7,9 +7,8 @@ import { AuthProvider } from './context/AuthContext'
 import Homepage from './views/Homepage'
 import Registerpage from './views/Registerpage'
 import Loginpage from './views/Loginpage'
-import Dashboard from './views/Dashboard'
+import TodoList from './views/TodoList'
 import Navi from './views/Navbar';
-
 
 
 function App() {
@@ -18,7 +17,7 @@ function App() {
       <AuthProvider>
         < Navi/>
         <Switch>
-          <PrivateRoute component={Dashboard} path="/dashboard" exact />
+          <PrivateRoute component={TodoList} path="/todo" exact />
           <Route component={Loginpage} path="/login" />
           <Route component={Registerpage} path="/register" exact />
           <Route component={Homepage} path="/" exact />

@@ -2,7 +2,7 @@ import jwtDecode from "jwt-decode";
 import React from "react";
 import "./style.css";
 
-class Dashboard extends React.Component {
+class TodoList extends React.Component {
   constructor(props) {
     var user_id = 0;
     if (localStorage.getItem("authTokens")) {
@@ -432,4 +432,4 @@ class Dashboard extends React.Component {
   }
 }
 
-export default Dashboard;
+export default TodoList;

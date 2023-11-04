@@ -36,7 +36,7 @@ function Navi() {
           {token !== null &&
           <>
             <li className="nav__links-text">
-              <a class="nav-link" href="/dashboard" style={{cursor:"pointer", color: '#fff'}}>Dashboard</a>
+              <a class="nav-link" href="/todo" style={{cursor:"pointer", color: '#fff'}}>Todo</a>
             </li>
             <li className="nav__links-text">
                 <a className="nav-link" onClick={logoutUser} style={{cursor:"pointer", color: '#fff'}}>Logout</a>
