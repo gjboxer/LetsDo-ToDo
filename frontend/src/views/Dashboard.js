@@ -1,18 +1,29 @@
 import jwtDecode from 'jwt-decode';
 import React from 'react';
 import './style.css';
-    
-    
+
+
+
 class Dashboard extends React.Component {
-    
+
         constructor(props){
+          var user_id=0;
+          if (localStorage.getItem("authTokens")){
+            const decode = jwtDecode(localStorage.getItem("authTokens"))
+            user_id = decode.user_id
+            var username = decode.username
+            var full_name = decode.full_name
+            var image = decode.image
+          }
+
           super(props);
             this.state = {
               todoList:[],
               activeItem:{
-                id:null, 
+                id:null,
                 title:'',
                 completed:false,
+                user:user_id ,
               },
               editing:false,
             }
@@ -20,13 +31,13 @@ class Dashboard extends React.Component {
             this.handleChange = this.handleChange.bind(this)
             this.handleSubmit = this.handleSubmit.bind(this)
             this.getCookie = this.getCookie.bind(this)
-      
-      
+
+
             this.startEdit = this.startEdit.bind(this)
             this.deleteItem = this.deleteItem.bind(this)
             this.strikeUnstrike = this.strikeUnstrike.bind(this)
         };
-      
+
         getCookie(name) {
           var cookieValue = null;
           if (document.cookie && document.cookie !== '') {
@@ -41,29 +52,29 @@ class Dashboard extends React.Component {
           }
           return cookieValue;
       }
-      
+
         componentWillMount(){
           this.fetchTasks()
         }
-      
+
         fetchTasks(){
           console.log('Fetching...')
-      
+
           fetch('http://127.0.0.1:8000/api/task-list/')
           .then(response => response.json())
-          .then(data => 
+          .then(data =>
             this.setState({
               todoList:data
             })
             )
         }
-      
+
         handleChange(e){
           var name = e.target.name
           var value = e.target.value
           console.log('Name:', name)
           console.log('Value:', value)
-      
+
           this.setState({
             activeItem:{
               ...this.state.activeItem,
@@ -71,24 +82,24 @@ class Dashboard extends React.Component {
             }
           })
         }
-      
+
         handleSubmit(e){
           e.preventDefault()
           console.log('ITEM:', this.state.activeItem)
-      
+
           var csrftoken = this.getCookie('csrftoken')
-      
+
           var url = 'http://127.0.0.1:8000/api/task-create/'
-      
+
           if(this.state.editing == true){
             url = `http://127.0.0.1:8000/api/task-update/${ this.state.activeItem.id}/`
             this.setState({
               editing:false
             })
           }
-      
-      
-      
+
+
+
           fetch(url, {
             method:'POST',
             headers:{
@@ -97,12 +108,22 @@ class Dashboard extends React.Component {
             },
             body:JSON.stringify(this.state.activeItem)
           }).then((response)  => {
+            var user_id=0;
+          if (localStorage.getItem("authTokens")){
+            const decode = jwtDecode(localStorage.getItem("authTokens"))
+            user_id = decode.user_id
+            var username = decode.username
+            var full_name = decode.full_name
+            var image = decode.image
+          }
               this.fetchTasks()
               this.setState({
                 activeItem:{
-                id:null, 
+                id:null,
                 title:'',
                 completed:false,
+                user:user_id,
+
               }
               })
           }).catch(function(error){
