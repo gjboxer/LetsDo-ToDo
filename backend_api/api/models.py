@@ -39,7 +39,7 @@ post_save.connect(save_user_profile, sender=User)
 class Task(models.Model):
     title = models.CharField(max_length=200)
     completed = models.BooleanField(default=False, blank=True, null=True)
-    due_date = models.DateTimeField(blank=True, default=datetime.now, null=True)
+    due_date = models.DateTimeField(blank=True, default=datetime.now().date(), null=True)
     priority = models.CharField(max_length=20, default="medium", blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
