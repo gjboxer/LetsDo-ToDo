@@ -258,8 +258,8 @@ class TodoList extends React.Component {
 
     return (
       <div className="container">
-        <center style={{ marginTop: 10, fontSize: 25, fontWeight: "bold" }}>
-          Hello {username}
+        <center style={{ marginTop: 20, fontSize: 25, fontWeight: "bold" }}>
+          Welcome !!! {username}
         </center>
         <div id="task-container">
           <div
@@ -277,7 +277,7 @@ class TodoList extends React.Component {
               id="sortCriteria"
               className="form-control"
               onChange={this.handleSortCriteriaChange}
-              style={{ marginRight: "20px", padding: "10px", width: 400 }}
+              style={{ marginRight: "20px", padding: "5px", width: 400 }}
             >
               <option value="due_date">Due Date</option>
               <option value="priority">Priority</option>

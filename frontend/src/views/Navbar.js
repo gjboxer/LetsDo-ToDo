@@ -1,7 +1,7 @@
 import {useContext} from 'react'
 import jwt_decode from "jwt-decode"
 import AuthContext from '../context/AuthContext'
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { Navbar, Nav } from "react-bootstrap";
 import "./navbar.scss";
 
