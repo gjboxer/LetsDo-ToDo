@@ -54,3 +54,21 @@ body{
   .task-wrapper:hover{
       background-color: #F0F0F0;
   }
+
+  .tab-button {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .tab-button.active {
+    background-color: rgb(54,217,182,1);
+    color: #fff;
+  }
+  
+  .tab-button:hover {
+    background-color: #ddd;
+  }

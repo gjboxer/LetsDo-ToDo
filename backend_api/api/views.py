@@ -27,7 +27,9 @@ def apiOverview(request):
 
 @api_view(['GET'])
 def taskList(request):
-	tasks = Task.objects.all().order_by('-id')
+	user_id = request.GET.get('user')
+	user = User.objects.get(username=user_id)
+	tasks = Task.objects.filter(user=user).order_by('-id')
 	serializer = TaskSerializer(tasks, many=True)
 	return Response(serializer.data)
 
